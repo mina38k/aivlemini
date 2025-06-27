@@ -37,7 +37,17 @@ public class PolicyHandler {
 
         // Comments //
         //출간된 도서 등록
-
+        Book book = new Book();
+        book.setBookName(publishPrepared.getBookName());
+        book.setCategory(publishPrepared.getCategory());
+        book.setIsBestSeller(false);
+        book.setAuthorName(publishPrepared.getAuthorName());
+        book.setImage(publishPrepared.getCoverImagePath());
+        book.setSubscriptionCount(0);
+        book.setBookContent(publishPrepared.getSummaryContent());
+        book.setPdfPath(publishPrepared.getPdfPath());
+        book.setAuthorId(publishPrepared.getAuthorId());
+        
         // Sample Logic //
         Book.registerBook(event);
     }
