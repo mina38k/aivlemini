@@ -47,67 +47,47 @@ public class Book {
 
     //<<< Clean Arch / Port Method
     public static void registerBook(PublishPrepared publishPrepared) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
         Book book = new Book();
-        repository().save(book);
+        book.setBookName(publishPrepared.getBookName());
+        book.setCategory(publishPrepared.getCategory());
+        book.setIsBestSeller(false);
+        book.setAuthorName(publishPrepared.getAuthorName());
+        book.setImage(publishPrepared.getCoverImagePath());
+        book.setSubscriptionCount(0);
+        book.setBookContent(publishPrepared.getSummaryContent());
+        book.setPdfPath(publishPrepared.getPdfPath());
+        book.setAuthorId(publishPrepared.getAuthorId());
 
-        BookRegistered bookRegistered = new BookRegistered(book);
-        bookRegistered.publishAfterCommit();
-        */
+        // Sample Logic //
+        Book.registerBook.save(book);
 
-        /** Example 2:  finding and process
-        
-        // if publishPrepared.gptIdmanuscriptId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<, Object> publishingMap = mapper.convertValue(publishPrepared.getGptId(), Map.class);
-        // Map<Long, Object> publishingMap = mapper.convertValue(publishPrepared.getManuscriptId(), Map.class);
-
-        repository().findById(publishPrepared.get???()).ifPresent(book->{
-            
-            book // do something
-            repository().save(book);
-
-            BookRegistered bookRegistered = new BookRegistered(book);
-            bookRegistered.publishAfterCommit();
-
-         });
-        */
+        BookRegistered event = new BookRegistered(book);
+        event.publishAfterCommit();
 
     }
 
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public static void grantBestseller(BookApply bookApply) {
-        //implement business logic here:
+        Long bookId = Long.valueOf(bookApply.getBookId().toString());
 
-        /** Example 1:  new item 
-        Book book = new Book();
-        repository().save(book);
-
-        BestsellerRegistered bestsellerRegistered = new BestsellerRegistered(book);
-        bestsellerRegistered.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
+        repository().findById(bookId).ifPresent(book -> {
         
-        // if bookApply.userInfoId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<Long, Object> applyingMap = mapper.convertValue(bookApply.getUserInfoId(), Map.class);
+            if (book.getSubscriptionCount() == null) {
+            book.setSubscriptionCount(0);
+            }
 
-        repository().findById(bookApply.get???()).ifPresent(book->{
-            
-            book // do something
+            book.setSubscriptionCount(book.getSubscriptionCount() + 1);
+
+            if (!Boolean.TRUE.equals(book.getIsBestSeller()) && book.getSubscriptionCount() >= 5) {
+            book.setIsBestSeller(true);
+
+            BestsellerRegistered event = new BestsellerRegistered(book);
+            event.publishAfterCommit();
+            }
+
             repository().save(book);
-
-            BestsellerRegistered bestsellerRegistered = new BestsellerRegistered(book);
-            bestsellerRegistered.publishAfterCommit();
-
-         });
-        */
+            });
 
     }
     //>>> Clean Arch / Port Method

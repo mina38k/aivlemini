@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PolicyHandler {
 
-    @Autowired
+ @Autowired
     BookRepository bookRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
@@ -34,22 +34,13 @@ public class PolicyHandler {
         System.out.println(
             "\n\n##### listener RegisterBook : " + publishPrepared + "\n\n"
         );
-
         // Comments //
         //출간된 도서 등록
-        Book book = new Book();
-        book.setBookName(publishPrepared.getBookName());
-        book.setCategory(publishPrepared.getCategory());
-        book.setIsBestSeller(false);
-        book.setAuthorName(publishPrepared.getAuthorName());
-        book.setImage(publishPrepared.getCoverImagePath());
-        book.setSubscriptionCount(0);
-        book.setBookContent(publishPrepared.getSummaryContent());
-        book.setPdfPath(publishPrepared.getPdfPath());
-        book.setAuthorId(publishPrepared.getAuthorId());
         
         // Sample Logic //
         Book.registerBook(event);
+
+        
     }
 
     @StreamListener(
@@ -65,6 +56,7 @@ public class PolicyHandler {
         );
 
         // Comments //
+        
         //열람된 도서 조회수 증가
         // 해당 도서의 조회수가 5회 이상이면 베스트 셀러
 
