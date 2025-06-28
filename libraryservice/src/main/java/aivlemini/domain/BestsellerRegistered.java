@@ -24,6 +24,16 @@ public class BestsellerRegistered extends AbstractEvent {
 
     public BestsellerRegistered(Book aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.bookName = aggregate.getBookName();
+        this.isBestSeller = aggregate.getIsBestSeller();
+        this.authorName = aggregate.getAuthorName();
+        this.image = aggregate.getImage();
+        this.bookContent = aggregate.getBookContent();
+        this.authorId = aggregate.getAuthorId();
+        this.subscriptionCount = aggregate.getSubscriptionCount();
+        this.category = aggregate.getCategory();
+        this.pdfPath = aggregate.getPdfPath();
     }
 
     public BestsellerRegistered() {
