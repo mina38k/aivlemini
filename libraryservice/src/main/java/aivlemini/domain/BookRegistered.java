@@ -21,7 +21,7 @@ public class BookRegistered extends AbstractEvent {
     private String authorId;
     private Integer subscriptionCount;
     private String pdfPath;
-    private AuthorId authorId;
+    // private AuthorId authorId;
 
     public BookRegistered(Book aggregate) {
         super(aggregate);

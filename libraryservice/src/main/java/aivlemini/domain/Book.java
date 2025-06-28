@@ -38,6 +38,8 @@ public class Book {
 
     private String pdfPath;
 
+    private String authorId;
+
     public static BookRepository repository() {
         BookRepository bookRepository = LibraryserviceApplication.applicationContext.getBean(
             BookRepository.class
@@ -59,7 +61,8 @@ public class Book {
         book.setAuthorId(publishPrepared.getAuthorId());
 
         // Sample Logic //
-        Book.registerBook.save(book);
+        repository().save(book);
+        // registerBook().save(book);
 
         BookRegistered event = new BookRegistered(book);
         event.publishAfterCommit();
@@ -90,6 +93,7 @@ public class Book {
             });
 
     }
+
     //>>> Clean Arch / Port Method
 
 }
