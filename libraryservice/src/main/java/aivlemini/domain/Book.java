@@ -47,6 +47,8 @@ public class Book {
         return bookRepository;
     }
 
+
+
     //<<< Clean Arch / Port Method
     public static void registerBook(PublishPrepared publishPrepared) {
         Book book = new Book();

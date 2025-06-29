@@ -14,20 +14,25 @@ public class BookQueryService {
         this.bookRepository = bookRepository;
     }
 
-    public List<BookView> getAllBooks() {
+   public List<BookView> getAllBooks() {
         return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
-                .map(book -> new BookView(
-                        book.getId(),
-                        book.getBookName(),
-                        book.getCategory(),
-                        book.isBestSeller(),
-                        book.getAuthorName(),
-                        book.getImage(),
-                        book.getSubscriptionCount(),
-                        book.getBookContent(),
-                        book.getAuthorId(),
-                        book.getPdfPath()
-                ))
+                .map(book -> {
+                    boolean isBestSeller = Boolean.TRUE.equals(book.getIsBestSeller());
+                    int subscriptionCount = book.getSubscriptionCount() != null ? book.getSubscriptionCount() : 0;
+
+                    return new BookView(
+                            book.getId(),
+                            book.getBookName(),
+                            book.getCategory(),
+                            isBestSeller,
+                            book.getAuthorName(),
+                            book.getImage(),
+                            subscriptionCount,
+                            book.getBookContent(),
+                            book.getAuthorId(),
+                            book.getPdfPath()
+                    );
+                })
                 .collect(Collectors.toList());
     }
 }

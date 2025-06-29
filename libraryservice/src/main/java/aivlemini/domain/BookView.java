@@ -15,6 +15,6 @@ public class BookView {
     private String image;
     private int subscriptionCount;
     private String bookContent;
-    private Long authorId;
+    private String authorId;
     private String pdfPath;
 }

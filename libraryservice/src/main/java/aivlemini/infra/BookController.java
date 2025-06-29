@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 //<<< Clean Arch / Inbound Adaptor
 
@@ -34,7 +35,16 @@ public class BookController {
     public List<BookView> getBooks() {
         return bookQueryService.getAllBooks();
     }
+      // 구독 수 증가 API 추가
+    @PostMapping("/{id}/subscribe")
+    public String subscribeBook(@PathVariable("id") Long id) {
+        BookApply apply = new BookApply();
+        apply.setBookId(id);
 
+        Book.grantBestseller(apply);
+
+        return "Subscription increased and bestseller status updated if applicable.";
+    }
     // @Autowired
     // BookRepository bookRepository;
 }
