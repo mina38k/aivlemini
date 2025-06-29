@@ -41,69 +41,63 @@ public class Point {
 
     //<<< Clean Arch / Port Method
     public static void gainRegisterPoint(UserRegistered userRegistered) {
-        //implement business logic here:
+        // userName 유효성 검사
+        if (userRegistered.getUserName() == null){
+            return;
+        }
 
-        /** Example 1:  new item 
+        // 포인트 객체 생성 
         Point point = new Point();
-        repository().save(point);
-
-        RegisterPointGained registerPointGained = new RegisterPointGained(point);
-        registerPointGained.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
         
+        // 포인트 지급 로직
+        if (userRegistered.getuserName().toLowerCase().startsWith("kt-")){
+            point.setPoint(6000); // userName이 "kt-" 인 경우 kt 고객으로 간주
+        } else {
+            point.setPoint(1000); // kt 고객이 아닌 경우 기본 포인트 지급
+        }
+        
+        // UserId 맵핑
+        UserId userId = new UserId(userRegistered.getId()); // 회원가입 때 입력(할당)된 Id와 맵핑
+        point.setUserId(userId);
 
-        repository().findById(userRegistered.get???()).ifPresent(point->{
-            
-            point // do something
-            repository().save(point);
-
-            RegisterPointGained registerPointGained = new RegisterPointGained(point);
-            registerPointGained.publishAfterCommit();
-
-         });
-        */
+        // point 객체 저장
+        repository().save(point);
 
     }
 
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public static void decreasePoint(BookApply bookApply) {
-        //implement business logic here:
+        // UserId 로 포인트 조회
+        UserId userId = new UserId(bookApply.getUserId());
+        Point point = repository().findByUserId(userId);
 
-        /** Example 1:  new item 
-        Point point = new Point();
+        if (point == null) {
+            System.out.println("포인트 정보 없음");
+            return;
+        }
+        // 구독 여부 판단
+        if (Boolean.TRUE.equals(bookApply.getIsPurchase())) {
+            System.out.println("열람 성공");
+            return;
+        }
+        // 포인트 부족 여부 판단
+        if (point.getPoint() < bookApply.getPrice()) { // TODO. 열람 aggregate 에서 열람한 도서 aggregate의 도서 가격을 받아와야 함. 
+            OutOfPoint event = new OutOfPoint(point);
+            event.publishAfterCommit();
+            return; // 포인트 차감되지 않음.
+        }
+
+        // 포인트 차감
+        point.setPoint(point.getPoint() - bookApply.getPrice()); // TODO. 위와 동일
         repository().save(point);
-
-        PointDecreased pointDecreased = new PointDecreased(point);
-        pointDecreased.publishAfterCommit();
-        OutOfPoint outOfPoint = new OutOfPoint(point);
-        outOfPoint.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        // if bookApply.userInfoId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<Long, Object> applyingMap = mapper.convertValue(bookApply.getUserInfoId(), Map.class);
-
-        repository().findById(bookApply.get???()).ifPresent(point->{
-            
-            point // do something
-            repository().save(point);
-
-            PointDecreased pointDecreased = new PointDecreased(point);
-            pointDecreased.publishAfterCommit();
-            OutOfPoint outOfPoint = new OutOfPoint(point);
-            outOfPoint.publishAfterCommit();
-
-         });
-        */
+        System.out.println("열람 성공");
 
     }
-    //>>> Clean Arch / Port Method
 
+    // 포인트 구매 Command
+    public void buyPoint(BuyPointCommand cmd) {
+    this.point += cmd.getAmount(); // 포인트 증가
+    }
 }
 //>>> DDD / Aggregate Root

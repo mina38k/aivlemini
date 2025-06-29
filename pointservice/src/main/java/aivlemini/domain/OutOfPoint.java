@@ -18,6 +18,10 @@ public class OutOfPoint extends AbstractEvent {
 
     public OutOfPoint(Point aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.point = aggregate.getPoint();
+        this.applyingId = aggregate.getApplyingId();
+        this.userId = aggregate.getUserId();
     }
 
     public OutOfPoint() {
