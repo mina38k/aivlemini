@@ -15,7 +15,8 @@ public class ManuscriptEdited extends AbstractEvent {
     private String contents;
     private String title;
     private String date;
-    private AuthorId authorId;
+    //private AuthorId authorId;
+    private String authorId;
     private String status;
     private String authorName;
 
