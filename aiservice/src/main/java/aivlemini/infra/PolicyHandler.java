@@ -35,12 +35,6 @@ public class PolicyHandler {
             "\n\n##### listener Publish : " + publicationRequested + "\n\n"
         );
 
-        // Comments //
-        //- AI 표지 이미시 생성
-        // - 책 요약
-        // - 책 구독료 선정?
-        //
-
         // Sample Logic //
         Publishing.publish(event);
     }
