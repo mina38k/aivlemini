@@ -14,7 +14,8 @@ public class SavedManuscript extends AbstractEvent {
     private Long id;
     private String date;
     private String contents;
-    private AuthorId authorId;
+    // private AuthorId authorId;
+    private String authorId;
     private String title;
     private String status;
     private String authorName;

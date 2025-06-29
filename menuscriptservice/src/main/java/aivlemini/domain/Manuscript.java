@@ -23,6 +23,8 @@ public class Manuscript {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String date; // 추가
+
     private String contents;
 
     private String title;
@@ -31,8 +33,9 @@ public class Manuscript {
 
     private String authorName;
 
-    @Embedded
-    private AuthorId authorId;
+    // @Embedded // 얘를 주석하지 않으면, hibernate 오류 발생
+    // private AuthorId authorId;
+    private String authorId;
 
     @PostPersist
     public void onPostPersist() {
@@ -75,11 +78,9 @@ public class Manuscript {
     public static void notifyStatus(PublishPrepared publishPrepared) {
         //implement business logic here:
 
-        /** Example 1:  new item 
-        Manuscript manuscript = new Manuscript();
-        repository().save(manuscript);
-
-        */
+        //Example 1:  new item 
+        // Manuscript manuscript = new Manuscript();
+        // repository().save(manuscript);
 
         /** Example 2:  finding and process
         
